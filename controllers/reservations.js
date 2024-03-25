@@ -6,12 +6,15 @@ const Reservation = require("../models/Reservation");
 //access  Public
 exports.getReservations = async (req, res, next) => {
   let query;
-
   // General users can see only their appointment
   if (req.user.role !== "admin") {
     query = Reservation.find({ user: req.user.id }).populate({
       path: "coworking",
       select: "name province tel",
+    });
+    query = Reservation.find({ user: req.user.id }).populate({
+      path: "user",
+      select: "name email tel",
     });
   } else {
     // If you are an admin, you can see all
@@ -21,26 +24,21 @@ exports.getReservations = async (req, res, next) => {
         path: "coworking",
         select: "name province tel",
       });
+      query = Reservation.find({ user: req.user.id }).populate({
+        path: "user",
+        select: "name email tel",
+      });
     } else {
       query = Reservation.find().populate({
         path: "coworking",
         select: "name province tel",
       });
+      query = Reservation.find({ user: req.user.id }).populate({
+        path: "user",
+        select: "name email tel",
+      });
     }
   }
-  if (req.user.id) {
-    console.log(req.params.coworkingId);
-    query = Reservation.find({ user: req.user.id }).populate({
-      path: "user",
-      select: "name email tel",
-    });
-  } else {
-    query = Reservation.find().populate({
-      path: "user",
-      select: "name email tel",
-    });
-  }
-  
   try {
     const reservations = await query;
     res.status(200).json({
