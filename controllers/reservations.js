@@ -27,8 +27,7 @@ exports.getReservations = async (req, res, next) => {
         select: "name province tel",
       });
     }
-  }
-  if (req.user.id) {
+    if (req.user.id) {
       console.log(req.params.coworkingId);
       query = Reservation.find({ user: req.user.id }).populate({
         path: "user",
@@ -40,6 +39,8 @@ exports.getReservations = async (req, res, next) => {
         select: "name email tel",
       });
     }
+  }
+  
   try {
     const reservations = await query;
     res.status(200).json({
