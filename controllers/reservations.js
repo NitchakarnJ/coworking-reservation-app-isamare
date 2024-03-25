@@ -27,18 +27,18 @@ exports.getReservations = async (req, res, next) => {
         select: "name province tel",
       });
     }
-    if (req.user.id) {
-      console.log(req.params.coworkingId);
-      query = Reservation.find({ user: req.user.id }).populate({
-        path: "user",
-        select: "name email tel",
-      });
-    } else {
-      query = Reservation.find().populate({
-        path: "user",
-        select: "name email tel",
-      });
-    }
+  }
+  if (req.user.id) {
+    console.log(req.params.coworkingId);
+    query = Reservation.find({ user: req.user.id }).populate({
+      path: "user",
+      select: "name email tel",
+    });
+  } else {
+    query = Reservation.find().populate({
+      path: "user",
+      select: "name email tel",
+    });
   }
   
   try {
