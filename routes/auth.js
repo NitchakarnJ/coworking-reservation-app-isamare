@@ -6,7 +6,8 @@ const {
   getMe,
   logout,
   getAllUsers,
-  deleteMe
+  deleteMe,
+  updateMe
 } = require("../controllers/auth");
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.get("/logout", logout);
 router.get("/me", protect, getMe);
 router.get("/getallusers", protect, authorize("admin"), getAllUsers);
 router.delete("/deleteMe", protect, deleteMe);
+router.put("/updateMe", protect, updateMe);
 
 module.exports = router;

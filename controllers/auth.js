@@ -218,3 +218,31 @@ exports.deleteMe = async (req, res, next) => {
     res.status(400).json({ success: false });
   }
 };
+
+//@desc         Update account user
+//@routes       PUT /api/project/auth/update
+//@access       Private
+exports.updateMe = async (req, res, next) => {
+  try {
+    if (req.body.role) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Can not change role" });
+    }
+    const user = await User.findByIdAndUpdate(req.user.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: "not user" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (err) {
+    res.status(400).json({ success: false });
+  }
+};
